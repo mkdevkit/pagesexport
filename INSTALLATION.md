@@ -2,7 +2,7 @@
 
 ## 系统要求
 
-- Node.js: v18.x 或更高版本（推荐 v20.x）
+- Node.js: v24.14.1 或更高版本（内置 SQLite 支持）
 - npm: v8.x 或更高版本
 - 操作系统: Windows, macOS, Linux
 
@@ -12,46 +12,11 @@
 npm install
 ```
 
-## 如果遇到原生模块编译问题
-
-### 问题：`better-sqlite3` 版本不匹配
-
-如果遇到以下错误：
-```
-was compiled against a different Node.js version using NODE_MODULE_VERSION 119
-```
-
-### 解决方案
-
-**方案 1：重新编译**
-```bash
-npm rebuild better-sqlite3
-```
-
-**方案 2：重新安装**
-```bash
-npm install better-sqlite3@latest
-```
-
-**方案 3：完全清理后重装**
-```bash
-# Windows
-Remove-Item -Recurse -Force node_modules
-Remove-Item -Force package-lock.json
-npm cache clean --force
-npm install
-
-# Mac/Linux
-rm -rf node_modules package-lock.json
-npm cache clean --force
-npm install
-```
-
 ## 新增依赖
 
 - `@uiw/react-md-editor`: Markdown 编辑器
 - `lucide-react`: 图标库
-- `better-sqlite3`: SQLite 数据库（原生模块）
+- `node:sqlite`: SQLite 数据库（Node.js 24+ 内置）
 
 ## 运行项目
 

@@ -8,6 +8,10 @@ const fs = require('fs');
 const configPathArg = process.argv.find(arg => arg.startsWith('--config='));
 const customConfigPath = configPathArg ? configPathArg.split('=')[1] : null;
 
+// 从命令行参数获取端口
+const portArg = process.argv.find(arg => arg.startsWith('--port='));
+const port = portArg ? parseInt(portArg.split('=')[1], 10) : 3000;
+
 // 如果指定了自定义配置文件路径，设置环境变量
 if (customConfigPath) {
   if (!fs.existsSync(customConfigPath)) {
@@ -26,8 +30,9 @@ const nextBinPath = path.join(__dirname, 'node_modules', 'next', 'dist', 'bin', 
 console.log('正在启动 Next.js 服务器...');
 console.log(`Node.js 版本: ${process.version}`);
 console.log(`环境: ${process.env.NODE_ENV || 'development'}`);
+console.log(`端口: ${port}`);
 
-const args = ['start', '-p', '3000'];
+const args = ['start', '-p', String(port)];
 
 // 如果是生产环境，添加相关参数
 if (process.env.NODE_ENV === 'production') {

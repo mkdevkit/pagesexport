@@ -34,6 +34,7 @@ export default function NewArticlePage() {
     description_en: '',
     description_zh: '',
     content: '',
+    src: '',
     flag: 'draft' as 'draft' | 'published',
   })
   const [selectedCategories, setSelectedCategories] = useState<number[]>([])

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import fs from 'fs';
 import path from 'path';
 import { loadConfig } from './config';
@@ -28,6 +28,7 @@ export interface Article {
   description_en?: string;
   description_zh?: string;
   content?: string;
+  src?: string;
   date: string;
   flag: 'draft' | 'published';
   created_at: string;
@@ -44,9 +45,9 @@ export interface ArticleTag {
   tag_id: number;
 }
 
-let db: Database.Database | null = null;
+let db: DatabaseSync | null = null;
 
-export function getDatabase(): Database.Database {
+export function getDatabase(): DatabaseSync {
   if (!db) {
     const config = loadConfig();
     const dbDir = config.sqlite_db_dir;
@@ -56,10 +57,10 @@ export function getDatabase(): Database.Database {
     }
 
     const dbPath = path.join(dbDir, 'content.db');
-    db = new Database(dbPath);
+    db = new DatabaseSync(dbPath);
 
     // 启用 WAL 模式
-    db.pragma('journal_mode = WAL');
+    db.exec('PRAGMA journal_mode = WAL');
 
     initializeTables(db);
   }
@@ -67,7 +68,7 @@ export function getDatabase(): Database.Database {
   return db!;
 }
 
-function initializeTables(database: Database.Database) {
+function initializeTables(database: DatabaseSync) {
   database.exec(`
     CREATE TABLE IF NOT EXISTS categories (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
