@@ -3,6 +3,7 @@ import { getDatabase, Category, Tag } from '@/lib/db';
 import { ArticleWithRelations, PaginationParams, PaginatedResult } from '@/types';
 import { loadConfig } from '@/lib/config';
 import { directoryExists } from '@/lib/file-utils';
+import { exportArticle } from '@/lib/export';
 import path from 'path';
 
 export const runtime = 'nodejs';
@@ -87,6 +88,7 @@ export async function POST(request: NextRequest) {
       description_en,
       description_zh,
       content,
+      src,
       categories = [],
       tags = [],
       flag = 'draft',
@@ -106,9 +108,9 @@ export async function POST(request: NextRequest) {
     const result = db.prepare(`
       INSERT INTO articles (
         directory, title_en, title_zh, address, thumbnail,
-        preview, description_en, description_zh, content, date, flag,
+        preview, description_en, description_zh, content, src, date, flag,
         created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       directory,
       title_en,
@@ -119,6 +121,7 @@ export async function POST(request: NextRequest) {
       description_en || null,
       description_zh || null,
       content || null,
+      src || null,
       now,
       flag,
       now,
@@ -151,6 +154,16 @@ export async function POST(request: NextRequest) {
       INNER JOIN article_tags at ON t.id = at.tag_id
       WHERE at.article_id = ?
     `).all(articleId) as Tag[];
+
+    // 如果文章是已发布状态，导出 md 文件和图片
+    if (flag === 'published') {
+      try {
+        await exportArticle(articleId);
+      } catch (error) {
+        console.error('Export failed:', error);
+        // 导出失败不影响创建操作
+      }
+    }
 
     return NextResponse.json({ success: true, data: article });
   } catch (error) {

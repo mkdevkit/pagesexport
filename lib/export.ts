@@ -13,6 +13,7 @@ export interface ArticleExportData {
   description_en?: string;
   description_zh?: string;
   content?: string;
+  src?: string;
   date: string;
   categories: Array<{ name_en: string; name_zh: string }>;
   tags: Array<{ name_en: string; name_zh: string }>;
@@ -57,6 +58,7 @@ export async function exportArticle(articleId: number) {
     description_en: article.description_en,
     description_zh: article.description_zh,
     content: article.content,
+    src: article.src,
     date: article.date,
     categories,
     tags,
@@ -112,6 +114,10 @@ thumbnail: "${data.thumbnail}"
   if (data.tags && data.tags.length > 0) {
     const tags = data.tags.map((t) => `"${t.name_en}"`).join(', ');
     frontmatter += `tags: [${tags}]\n`;
+  }
+
+  if (data.src) {
+    frontmatter += `src: "${data.src}"\n`;
   }
 
   frontmatter += `date: ${data.date.split('T')[0]}

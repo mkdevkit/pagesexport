@@ -53,6 +53,7 @@ export default function EditArticlePage() {
     description_en: '',
     description_zh: '',
     content: '',
+    src: '',
     flag: 'draft' as 'draft' | 'published',
   })
   const [selectedCategories, setSelectedCategories] = useState<number[]>([])
@@ -79,6 +80,7 @@ export default function EditArticlePage() {
         description_en: result.data.description_en || '',
         description_zh: result.data.description_zh || '',
         content: result.data.content || '',
+        src: result.data.src || '',
         flag: result.data.flag,
       })
       setSelectedCategories(result.data.categories?.map((c: Category) => c.id) || [])
@@ -339,6 +341,19 @@ export default function EditArticlePage() {
                   rows={3}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                源地址
+              </label>
+              <input
+                type="url"
+                value={formData.src}
+                onChange={(e) => setFormData({ ...formData, src: e.target.value })}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                placeholder="https://example.com/article"
+              />
             </div>
 
             <div>

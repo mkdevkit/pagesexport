@@ -57,12 +57,14 @@ export function getDatabase(): Database.Database {
 
     const dbPath = path.join(dbDir, 'content.db');
     db = new Database(dbPath);
+
+    // 启用 WAL 模式
     db.pragma('journal_mode = WAL');
 
     initializeTables(db);
   }
 
-  return db;
+  return db!;
 }
 
 function initializeTables(database: Database.Database) {
@@ -92,6 +94,7 @@ function initializeTables(database: Database.Database) {
       description_en TEXT,
       description_zh TEXT,
       content TEXT,
+      src TEXT,
       date DATETIME DEFAULT CURRENT_TIMESTAMP,
       flag TEXT DEFAULT 'draft' CHECK(flag IN ('draft', 'published')),
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -121,6 +124,18 @@ function initializeTables(database: Database.Database) {
     const hasContentColumn = columns.some((col: any) => col.name === 'content');
     if (!hasContentColumn) {
       database.exec('ALTER TABLE articles ADD COLUMN content TEXT');
+    }
+  } catch (error) {
+    // 如果迁移失败，记录错误但不中断程序
+    console.error('Migration error:', error);
+  }
+
+  // 迁移：添加 src 字段（如果不存在）
+  try {
+    const columns = database.prepare("PRAGMA table_info(articles)").all() as any[];
+    const hasSrcColumn = columns.some((col: any) => col.name === 'src');
+    if (!hasSrcColumn) {
+      database.exec('ALTER TABLE articles ADD COLUMN src TEXT');
     }
   } catch (error) {
     // 如果迁移失败，记录错误但不中断程序

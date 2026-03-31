@@ -16,10 +16,12 @@ export function loadConfig(): Config {
     return config;
   }
 
-  const configPath = path.join(process.cwd(), 'config.ini');
+  // 优先从环境变量获取配置文件路径
+  const customConfigPath = process.env.CONFIG_FILE_PATH;
+  const configPath = customConfigPath ? path.resolve(customConfigPath) : path.join(process.cwd(), 'config.ini');
 
   if (!fs.existsSync(configPath)) {
-    throw new Error('配置文件 config.ini 不存在');
+    throw new Error(`配置文件不存在: ${configPath}`);
   }
 
   const configContent = fs.readFileSync(configPath, 'utf-8');

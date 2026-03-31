@@ -323,6 +323,19 @@ export default function NewArticlePage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
+                源地址
+              </label>
+              <input
+                type="url"
+                value={formData.src}
+                onChange={(e) => setFormData({ ...formData, src: e.target.value })}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                placeholder="https://example.com/article"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 文章内容 (Markdown)
               </label>
               <div data-color-mode="light" className="w-full">

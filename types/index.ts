@@ -23,6 +23,7 @@ export interface Article {
   description_en?: string;
   description_zh?: string;
   content?: string;
+  src?: string;
   categories?: number[];
   tags?: number[];
   date: string;

@@ -56,12 +56,6 @@ export default function Home() {
                 >
                   标签管理
                 </Link>
-                <Link
-                  href="/config"
-                  className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                >
-                  配置管理
-                </Link>
               </div>
             </div>
           </div>

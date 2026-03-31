@@ -51,6 +51,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       description_en,
       description_zh,
       content,
+      src,
       categories,
       tags,
       flag,
@@ -101,6 +102,10 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     if (content !== undefined) {
       updateFields.push('content = ?');
       updateParams.push(content || null);
+    }
+    if (src !== undefined) {
+      updateFields.push('src = ?');
+      updateParams.push(src || null);
     }
     if (flag !== undefined) {
       updateFields.push('flag = ?');
