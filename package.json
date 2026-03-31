@@ -1,0 +1,66 @@
+{
+  "name": "astro-content-manager",
+  "version": "1.0.0",
+  "description": "Content management tool for Astro sites",
+  "main": "main.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next build",
+    "start": "next start",
+    "electron": "electron .",
+    "electron:build": "npm run build && electron-builder",
+    "electron:dev": "NODE_ENV=development electron ."
+  },
+  "dependencies": {
+    "@uiw/react-md-editor": "^3.23.0",
+    "better-sqlite3": "^9.6.0",
+    "cors": "^2.8.5",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.294.0",
+    "multer": "^1.4.5-lts.1",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.10",
+    "@types/ms": "^2.1.0",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^20.10.0",
+    "@types/prop-types": "^15.7.15",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.0",
+    "electron": "^26.6.0",
+    "electron-builder": "^24.9.1",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.3.0"
+  },
+  "build": {
+    "appId": "com.astrocontentmanager.app",
+    "productName": "Astro Content Manager",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*",
+      "main.js",
+      "preload.js",
+      "config.ini",
+      "lib/**/*",
+      "types/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
